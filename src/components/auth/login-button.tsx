@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Children } from "react";
 
 interface LoginButtonProps {
   children: React.ReactNode;
@@ -20,5 +19,5 @@ export const LoginButton = ({
     return <span>TODO: Implement Modal </span>;
   }
 
-  return <span onClick={() => router.push("/login")}>{children}</span>;
+  return <span onClick={() => router.push("/auth/login")}>{children}</span>;
 };
