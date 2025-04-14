@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   // experimental: {
   //   turbo: false,
   // },
+  reactStrictMode: true,
+  images: {
+    domains: ["localhost"],
+  },
 };
 
 export default nextConfig;

@@ -6,6 +6,7 @@ import {
   publicRoutes,
   apiAuthPrefix,
   authRoutes,
+  ADMIN_DEFAULT_REDIRECT,
 } from "./routes";
 import { NextResponse } from "next/server";
 
@@ -13,6 +14,8 @@ const { auth } = NextAuth(authConfig);
 export default auth(async function middleware(req) {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  const user = req.auth?.user;
+  const userRole = user?.role || null;
   console.log(isLoggedIn);
 
   const isApiAuthRoutes = nextUrl.pathname.startsWith(apiAuthPrefix);
@@ -26,6 +29,9 @@ export default auth(async function middleware(req) {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
+      if (userRole === "ADMIN") {
+        return Response.redirect(new URL(ADMIN_DEFAULT_REDIRECT, nextUrl));
+      }
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
     return null;

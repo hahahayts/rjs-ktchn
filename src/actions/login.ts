@@ -5,7 +5,7 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import { getUserByEmial } from "@/data/user";
 import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { ADMIN_DEFAULT_REDIRECT, DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
@@ -26,10 +26,12 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   // }
 
   try {
+    const redirect_URL =
+      user.role === "ADMIN" ? ADMIN_DEFAULT_REDIRECT : DEFAULT_LOGIN_REDIRECT;
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: redirect_URL,
     });
   } catch (error) {
     if (error instanceof AuthError) {
